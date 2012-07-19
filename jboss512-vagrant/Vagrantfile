@@ -1,0 +1,81 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "centos62min"
+  config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos62min.box"
+  config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+
+  # Forward a port from the guest to the host, which allows for outside
+  # computers to access the VM, whereas host only networking does not.
+  
+  # JBoss node00 ports
+  config.vm.forward_port 8080, 8080 # HTTP
+  config.vm.forward_port 8440, 8440 # HTTPS
+  config.vm.forward_port 8780, 8780 # DEBUG
+  
+  # JBoss node01 ports
+  config.vm.forward_port 8180, 8180 # HTTP
+  config.vm.forward_port 8441, 8441 # HTTPS
+  config.vm.forward_port 8781, 8781 # DEBUG
+  
+  # Jenkins HTTP
+  config.vm.forward_port 8888, 8888
+  
+  # SSH
+  config.vm.forward_port 22, 2222
+  # Enable provisioning with chef solo, specifying a cookbooks path (relative
+  # to this Vagrantfile), and adding some recipes and/or roles.
+  
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = "chef-repo-yu/cookbooks"
+    chef.roles_path = "chef-repo-yu/roles"
+    
+    chef.add_role "jboss-vagrant"
+  
+    # You may also specify custom JSON attributes:
+    chef.json.merge!({
+                        :misc => {  :hostname => "vagrant-centos-62" },
+                        :java => {  
+                                    :tmpdir => "/vagrant/src",
+                                    :jdk_url   => 'http://leleupi.its.yale.edu:8181/PKG/jdk1.6.0_33.tar.gz',
+                                    :jdk_file  => 'jdk1.6.0_33.tar.gz',
+                                    :java_home => '/usr/local/jdk1.6.0_33'
+                                  },
+                        :jenkins => { :user => "vagrant" },          
+                        :jboss => { 
+                                    :tmpdir => "/vagrant/src",
+                                    :keystore_url => "http://leleupi.its.yale.edu:8181/PKG/server.keystore",
+                                    :jboss_url   => 'http://leleupi.its.yale.edu:8181/PKG/jboss-eap-5.1.2.tar.gz',
+                                    :jboss_file  => 'jboss-eap-5.1.2.tar.gz',
+                                    :jboss_home  => '/usr/local/jboss-eap-5.1/jboss-as',
+                                    :nodes => {  :node00 => { 
+                                                              :user => "vagrant",
+                                                              :additional_jboss_opts  => [ '-Djboss.proxyname=localhost','-Djboss.proxyport=8440'],
+                                                              :additional_java_opts   => [ '-Xdebug',
+                                                                                           '-Xrunjdwp:transport=dt_socket,address=8780,server=y,suspend=n' ]
+                                                            },
+                                                  :node01 => { 
+                                                              :user => "vagrant",
+                                                              :additional_jboss_opts  => [ '-Djboss.proxyname=localhost','-Djboss.proxyport=8441'],
+                                                              :additional_java_opts   => [ '-Xdebug',
+                                                                                           '-Xrunjdwp:transport=dt_socket,address=8781,server=y,suspend=n' ]
+                                                              }
+                                              }
+                                  } 
+                    })
+   end
+
+  # Share an additional folder to the guest VM. The first argument is
+  # an identifier, the second is the path on the guest to mount the
+  # folder, and the third is the path on the host to the actual folder.
+  config.vm.share_folder "jboss-apps", "/usr/local/jboss-apps", "./jboss/jboss-apps"
+  config.vm.share_folder "jboss-logs", "/var/log/jboss", "./jboss/jboss-logs"
+  config.vm.share_folder "jboss-deploy", "/usr/local/jboss-deploy", "./jboss/jboss-deploy"
+  
+end

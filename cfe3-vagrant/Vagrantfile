@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  #config.vm.box = "minimal-centos-62"
+  #config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/minimal-centos-62.box"
+  config.vm.box = "rhel63min"
+  config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/rhel63min.box"
+  config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+
+  # Forward a port from the guest to the host, which allows for outside
+  # computers to access the VM, whereas host only networking does not.
+  config.vm.forward_port 22, 2222
+
+  # Enable provisioning with chef solo, specifying a cookbooks path (relative
+  # to this Vagrantfile), and adding some recipes and/or roles.
+  
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = "chef-repo-yu/cookbooks"
+    chef.roles_path = "chef-repo-yu/roles"
+    
+    #chef.add_recipe "yum"
+    chef.add_recipe "cfengine::localclient"
+  
+    # You may also specify custom JSON attributes:
+    chef.json.merge!({ 
+                        :cfengine => {  :policy_server   => 'vm-cfgprdapp-01.its.yale.edu',
+                                        :policy_server_ip  => '130.132.50.34',
+                                        :masterfiles => '/var/cfengine/masterfiles',
+                                        :inputs => '/var/cfengine/inputs',
+                                        :cfengine_package => "cfengine-community"
+                                      }
+                    })
+   end
+
+  config.vm.share_folder "masterfiles","/var/cfengine/masterfiles","./cfengine3/"
+  
+end
