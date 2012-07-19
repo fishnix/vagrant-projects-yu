@@ -1,6 +1,6 @@
 # Vagrant Projects
 
-This is a collections of useful Vagrant boxes.
+This is a collection of useful Vagrant boxes.
 
 ## How to get rolling
 
