@@ -1,24 +1,34 @@
--- Install vagrant
+## What you Get
+- A working linux box
+- A working RHEL Satellite configuration
+- cfengine community installed
+- Modified masterfiles that won't phone home to policyserver
+- Safety-Net blackhole route for policy server
 
--- Setup box
-cd ~/tmp/vagrant_projects
-git clone git://gist.github.com/3006712.git cfe3-vagrant
-cd cfe3-vagrant
+---
 
--- get local copy of cfe3 masterfiles
-svn co https://cf3svn.its.yale.edu/repos/cf3dcsunix/trunk cfengine3
+## The deets
+### TBD
 
--- get a copy of my chef cookbooks
-git clone git://github.com/fishnix/chef-repo-yu.git -b vagrant-cookbooks
+## Known Issues
+- promises.cf is not copied from inputs into /var/cfengine/inputs
 
--- edit Vagrantfile for your basebox name (if necessary)
+---
 
--- Fire and go
-vagrant up
+## How to get rolling
 
-vagrant ssh
+### Get local copy of cfe3 masterfiles
+svn co https://cf3svn.its.yale.edu/repos/cf3dcsunix/trunk cfengine3  
 
-sudo su -
+### Get a copy of my chef cookbooks
+git clone git://github.com/fishnix/chef-repo-yu.git -b vagrant-cookbooks  
 
-/var/cfengine/bin/cf-agent -Kvn -D localDev 
-/var/cfengine/bin/cf-agent -Kv -D localDev
+
+### Fire and go
+vagrant up  
+vagrant ssh  
+sudo su -  
+
+
+/var/cfengine/bin/cf-agent -Kvn -D localDev   
+/var/cfengine/bin/cf-agent -Kv -D localDev  
