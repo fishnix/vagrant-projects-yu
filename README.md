@@ -13,8 +13,7 @@ https://www.virtualbox.org/wiki/Downloads
 http://vagrantup.com/  
 
 ### Setup vagrant dir
-
-mkdir ~/tmp/
+mkdir ~/tmp/  
 cd ~/tmp/  
 git clone git@github.com:fishnix/vagrant-projects-yu.git vagrant-projects-yu  
 cd vagrant-projects-yu  
