@@ -29,9 +29,6 @@
 ### Setup some shared folders
 mkdir -p jboss/jboss-apps jboss/jboss-logs jboss/jboss-deploy  
 
-### get a copy of my chef cookbooks
-git clone git://github.com/fishnix/chef-repo-yu.git -b vagrant-cookbooks  
-
 ### Fire and go
 vagrant up  
 vagrant ssh  

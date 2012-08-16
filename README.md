@@ -16,4 +16,9 @@ http://vagrantup.com/
 mkdir ~/tmp/  
 cd ~/tmp/  
 git clone git://github.com/fishnix/vagrant-projects-yu.git vagrant-projects-yu  
-cd vagrant-projects-yu  
+cd vagrant-projects-yu
+
+### get a copy of my chef cookbooks
+git clone git://github.com/fishnix/chef-repo-yu.git -b vagrant-cookbooks
+
+### Pick a vagrant box and go (or create your own!)
