@@ -32,4 +32,7 @@ mkdir -p jboss/jboss-apps jboss/jboss-logs jboss/jboss-deploy
 ### Fire and go
 vagrant up  
 vagrant ssh  
-sudo su -  
+sudo su - 
+
+/etc/init.d/jboss_node00 start
+/etc/init.d/jenkins start
