@@ -54,6 +54,7 @@ Vagrant::Config.run do |config|
                                     :jboss_url   => 'http://leleupi.its.yale.edu:8181/PKG/jboss-eap-5.1.2.tar.gz',
                                     :jboss_file  => 'jboss-eap-5.1.2.tar.gz',
                                     :jboss_home  => '/usr/local/jboss-eap-5.1/jboss-as',
+                                    :additional_deploy_dirs => [ '${jboss.server.home.url}webapps' ],
                                     :nodes => {  :node00 => { 
                                                               :user => "vagrant",
                                                               :additional_jboss_opts  => [ '-Djboss.proxyname=localhost','-Djboss.proxyport=8440'],
