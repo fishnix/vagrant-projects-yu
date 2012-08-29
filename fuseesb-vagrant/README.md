@@ -13,6 +13,9 @@
 - TBD  
 
 ### Fuse Management Console:  
+- Installed in /usr/local/fuse-mc
+- Need to be provided license out of band
+- From outside the VM: http://localhost:8107  
 
 ### Jenkins:
 - Installed in /usr/local/jenkins
@@ -27,7 +30,7 @@
 ## How to get rolling
 
 ### Setup some shared folders
-TBD  
+- TBD  
 
 ### Fire and go
 - Start all boxes  
@@ -47,7 +50,7 @@ vagrant ssh mc1
 - Start FuseESB  
 export JAVA_HOME=/usr/local/jdk1.6.0_33  
 cd /usr/local/fuse-esb  
-
+./bin/fuseesb  
 
 - Start FuseMC  
 export JAVA_HOME=/usr/local/jdk1.6.0_33  
