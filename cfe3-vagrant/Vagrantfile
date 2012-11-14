@@ -25,6 +25,7 @@ Vagrant::Config.run do |config|
     chef.roles_path = "chef-repo-yu/roles"
     
     #chef.add_recipe "yum"
+    chef.add_recipe "yum::satellite"
     chef.add_recipe "cfengine::localclient"
   
     # You may also specify custom JSON attributes:
@@ -34,7 +35,11 @@ Vagrant::Config.run do |config|
                                         :masterfiles => '/var/cfengine/masterfiles',
                                         :inputs => '/var/cfengine/inputs',
                                         :cfengine_package => "cfengine-community"
-                                      }
+                                      },
+                        :yum => { :satellite => { 
+                                      :certurl => "http://vm-satprdapp-01.its.yale.edu/pub/RHN-ORG-TRUSTED-SSL-CERT"
+                                    }
+                                }
                     })
    end
 
