@@ -8,7 +8,7 @@
 ---
 
 ## The deets
-### TBD
+### cfengine installed in /var/cfengine
 
 ## Known Issues
 - promises.cf is not copied from inputs into /var/cfengine/inputs
