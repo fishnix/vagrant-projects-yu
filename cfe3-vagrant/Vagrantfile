@@ -16,13 +16,14 @@ Vagrant::Config.run do |config|
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
   config.vm.forward_port 22, 2222
-
+  config.vm.forward_port 8080, 8080
+  
   # Enable provisioning with chef solo, specifying a cookbooks path (relative
   # to this Vagrantfile), and adding some recipes and/or roles.
   
   config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = "chef-repo-yu/cookbooks"
-    chef.roles_path = "chef-repo-yu/roles"
+    chef.cookbooks_path = "../chef-repo-yu/cookbooks"
+    chef.roles_path = "../chef-repo-yu/roles"
     
     #chef.add_recipe "yum"
     chef.add_recipe "yum::satellite"

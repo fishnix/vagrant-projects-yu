@@ -20,10 +20,6 @@
 ### Get local copy of cfe3 masterfiles
 svn co https://cf3svn.its.yale.edu/repos/cf3dcsunix/trunk cfengine3  
 
-### Get a copy of my chef cookbooks
-git clone git://github.com/fishnix/chef-repo-yu.git -b vagrant-cookbooks  
-
-
 ### Fire and go
 vagrant up  
 vagrant ssh  
