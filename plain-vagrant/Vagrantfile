@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "centos62min"
+  config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos62min.box"
+  config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+
+  # Forward a port from the guest to the host, which allows for outside
+  # computers to access the VM, whereas host only networking does not.
+  
+  # SSH
+  config.vm.forward_port 22, 2222
+  
+  # Enable provisioning with chef solo, specifying a cookbooks path (relative
+  # to this Vagrantfile), and adding some recipes and/or roles.
+  
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = "../chef-repo-yu/cookbooks"
+    chef.roles_path = "../chef-repo-yu/roles"
+    
+    chef.add_recipe "misc::hosts"
+    
+    # You may also specify custom JSON attributes:
+    chef.json.merge!({
+                        :misc => {  :hostname => "plain-vagrant.local" },
+                    })
+   end
+
+  # Share an additional folder to the guest VM. The first argument is
+  # an identifier, the second is the path on the guest to mount the
+  # folder, and the third is the path on the host to the actual folder.
+  
+end
