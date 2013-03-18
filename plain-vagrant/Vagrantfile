@@ -7,8 +7,8 @@ Vagrant::Config.run do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "centos62min"
-  config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos62min.box"
+  config.vm.box = "centos64min"
+  config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos64min.box"
   config.vm.customize ["modifyvm", :id, "--memory", "1024"]
 
   # Forward a port from the guest to the host, which allows for outside
