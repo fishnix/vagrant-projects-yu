@@ -24,20 +24,27 @@
 ## How to get rolling  
 
 ### Setup some shared folders  
-- Create the 'src' directory (will persist downloads between 'destroy'/'up' cycles)  
+
+**Create the 'src' directory (will persist downloads between 'destroy'/'up' cycles)**  
 mkdir src    
 
 ### Fire and go  
-- Start up  
+
+**Start up**  
 vagrant up  
   
-- SSH
+**SSH**  
 vagrant ssh  
   
-- Start FuseESB  
+**Start FuseESB**  
+  
+/etc/init.d/fuse-esb start  
+
+or  
+  
 export JAVA_HOME=/usr/local/jdk1.6.0_33  
 cd /usr/local/fuse-esb  
 ./bin/fuseesb  
   
-- Become root   
+**Become root**  
 sudo su - 
