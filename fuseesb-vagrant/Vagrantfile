@@ -1,0 +1,46 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+    config.vm.box = "centos62min"
+    config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos62min.box"
+    config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+
+    # Misc ESB ports, use these in apps
+    config.vm.forward_port 8080, 8080
+    config.vm.forward_port 8181, 8181
+    config.vm.forward_port 8282, 8282
+    
+    # Jenkins HTTP
+    config.vm.forward_port 8888, 8888
+
+    # SSH
+    config.vm.forward_port 22, 2222
+
+    config.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = "../chef-repo-yu/cookbooks"
+      chef.roles_path = "../chef-repo-yu/roles"
+    
+      chef.add_role "esb-vagrant"
+      
+      # You may also specify custom JSON attributes:
+      chef.json.merge!({
+                          :misc => {  :hostname => "vagrant-centos-62" },
+                          :java => {  
+                                      :tmpdir     => "/vagrant/src",
+                                      :jdk_url    => 'http://leleupi.its.yale.edu:8181/PKG/jdk1.6.0_33.tar.gz',
+                                      :jdk_file   => 'jdk1.6.0_33.tar.gz',
+                                      :java_home  => '/usr/local/jdk1.6.0_33'
+                                    },
+                          :fuseesb => {  
+                                      :tmpdir   => "/vagrant/src",
+                                      :user     => "vagrant",
+                                      :url      => 'http://leleupi.its.yale.edu:8181/PKG/fuse-esb-full-7.1.0.fuse-047.tar.gz',
+                                      :file     => 'fuse-esb-full-7.1.0.fuse-047.tar.gz',
+                                      :install  => '/usr/local/fuse-esb-7.1.0.fuse-047',
+                                      :fuseesb_name     => 'localhost'
+                                    },
+                          :jenkins => { :jenkins_user   => "vagrant" },          
+                      })
+     end
+end
