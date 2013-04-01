@@ -59,13 +59,25 @@ Vagrant::Config.run do |config|
                                                               :user => "vagrant",
                                                               :additional_jboss_opts  => [ '-Djboss.proxyname=localhost','-Djboss.proxyport=8440'],
                                                               :additional_java_opts   => [ '-Xdebug',
-                                                                                           '-Xrunjdwp:transport=dt_socket,address=8780,server=y,suspend=n' ]
+                                                                                           '-Xrunjdwp:transport=dt_socket,address=8780,server=y,suspend=n' ],
+                                                              :additional_jboss_libs  => {
+                                                                                            'cas-client-core.jar'       => 'http://leleupi.its.yale.edu:8181/PKG/20120703.cas-client-core.jar',
+                                                                                            'cas-client-jboss.jar'      => 'http://leleupi.its.yale.edu:8181/PKG/20120703.cas-client-jboss.jar',
+                                                                                            'mysql-connector-java.jar'  => 'http://leleupi.its.yale.edu:8181/PKG/20120703.mysql-connector-java.jar',
+                                                                                            'ojdbc6.jar'                => 'http://leleupi.its.yale.edu:8181/PKG/20120703.ojdbc6.jar'
+                                                                                          }
                                                             },
                                                   :node01 => { 
                                                               :user => "vagrant",
                                                               :additional_jboss_opts  => [ '-Djboss.proxyname=localhost','-Djboss.proxyport=8441'],
                                                               :additional_java_opts   => [ '-Xdebug',
-                                                                                           '-Xrunjdwp:transport=dt_socket,address=8781,server=y,suspend=n' ]
+                                                                                           '-Xrunjdwp:transport=dt_socket,address=8781,server=y,suspend=n' ],
+                                                              :additional_jboss_libs  => {
+                                                                                           'cas-client-core.jar'       => 'http://leleupi.its.yale.edu:8181/PKG/20120703.cas-client-core.jar',
+                                                                                           'cas-client-jboss.jar'      => 'http://leleupi.its.yale.edu:8181/PKG/20120703.cas-client-jboss.jar',
+                                                                                           'mysql-connector-java.jar'  => 'http://leleupi.its.yale.edu:8181/PKG/20120703.mysql-connector-java.jar',
+                                                                                           'ojdbc6.jar'                => 'http://leleupi.its.yale.edu:8181/PKG/20120703.ojdbc6.jar'
+                                                                                         }
                                                               }
                                               }
                                   } 
