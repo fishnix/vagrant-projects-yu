@@ -19,7 +19,7 @@ Vagrant::Config.run do |config|
   config.vm.forward_port 443, 8443  # HTTPS
   
   # SSH
-  config.vm.forward_port 22, 2222
+  #config.vm.forward_port 22, 2222
 
   # Enable provisioning with chef solo, specifying a cookbooks path (relative
   # to this Vagrantfile), and adding some recipes and/or roles.

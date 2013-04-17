@@ -9,7 +9,7 @@ Vagrant::Config.run do |config|
     # Jenkins HTTP
     esb1_config.vm.forward_port 8888, 8888
     # SSH
-    esb1_config.vm.forward_port 22, 2222
+    #esb1_config.vm.forward_port 22, 2222
     esb1_config.vm.network :hostonly, "192.168.1.10"
     esb1_config.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = "../chef-repo-yu/cookbooks"
@@ -43,7 +43,7 @@ Vagrant::Config.run do |config|
     esb2_config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos62min.box"
     esb2_config.vm.customize ["modifyvm", :id, "--memory", "512"]
     # SSH
-    esb2_config.vm.forward_port 22, 2223
+    #esb2_config.vm.forward_port 22, 2223
     esb2_config.vm.network :hostonly, "192.168.1.11"
     esb2_config.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = "../chef-repo-yu/cookbooks"
@@ -79,7 +79,7 @@ Vagrant::Config.run do |config|
     # FUSE MC HTTP
     mc1_config.vm.forward_port 8107, 8107
     # SSH
-    mc1_config.vm.forward_port 22, 2224
+    #mc1_config.vm.forward_port 22, 2224
     mc1_config.vm.network :hostonly, "192.168.1.5"
     mc1_config.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = "../chef-repo-yu/cookbooks"
