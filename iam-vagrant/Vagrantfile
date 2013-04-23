@@ -23,7 +23,17 @@ Vagrant::Config.run do |config|
   config.vm.forward_port 8180, 8180 # HTTP
   config.vm.forward_port 8441, 8441 # HTTPS
   config.vm.forward_port 8781, 8781 # DEBUG
-  
+
+  # VDS ports
+  config.vm.forward_port 7070, 7070 # ControlPanel HTTP
+  config.vm.forward_port 7171, 7171 # ControlPanel HTTPS
+  config.vm.forward_port 2389, 2389 # VDS Console
+  config.vm.forward_port 4848, 4848 # App Server HTTP
+  config.vm.forward_port 9090, 9090 # VDS
+  config.vm.forward_port 9191, 9191 # VDS
+  config.vm.forward_port 4444, 4444 # LDAP
+  config.vm.forward_port 1389, 1389 # LDAP
+
   # Jenkins HTTP
   config.vm.forward_port 8888, 8888
   
