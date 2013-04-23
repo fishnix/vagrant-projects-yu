@@ -42,7 +42,7 @@ Vagrant::Config.run do |config|
     # You may also specify custom JSON attributes:
     chef.json.merge!({
                         :misc => {  :hostname => "vagrant-centos-62" },
-                        :java => {  
+                        :jdk => {  
                                     :tmpdir => "/vagrant/src",
                                     :jdk_url   => 'http://leleupi.its.yale.edu:8181/PKG/jdk1.6.0_33.tar.gz',
                                     :jdk_file  => 'jdk1.6.0_33.tar.gz',
@@ -55,6 +55,15 @@ Vagrant::Config.run do |config|
                                     :server_debian_password  => "vagrant",
                                     :bind_address            => "0.0.0.0"
                         },
+                        :maven => { :repositories => ["http://repository.its.yale.edu/maven2/repo"],
+                                    :version => 2
+                                  },
+                        :iam => {   :tmpdir => "/vagrant/src",
+                                    :radiantone => { 
+                                              :rpm_source => 'http://leleupi.its.yale.edu:8181/PKG/radiantone-vds-ics-6.0.2-1.x86_64.rpm',
+                                              :user => "vagrant"
+                                            } 
+                                },
                         :jboss => { 
                                     :tmpdir => "/vagrant/src",
                                     :keystore_url => "http://leleupi.its.yale.edu:8181/PKG/server.keystore",
