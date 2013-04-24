@@ -9,7 +9,7 @@ Vagrant::Config.run do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "centos64min"
   config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos64min.box"
-  config.vm.customize ["modifyvm", :id, "--memory", "2048"]
+  config.vm.customize ["modifyvm", :id, "--memory", "4096"]
 
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
