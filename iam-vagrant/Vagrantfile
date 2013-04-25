@@ -83,9 +83,9 @@ Vagrant::Config.run do |config|
                                     :additional_deploy_dirs => [ '${jboss.server.home.url}webapps' ],
                                     :nodes => {  :node00 => { 
                                                               :user => "vagrant",
-                                                              :maxperm => "256",
-                                                              :minheap => "1024",
-                                                              :maxheap => "2048",
+                                                              :maxperm => "256m",
+                                                              :minheap => "1024m",
+                                                              :maxheap => "2048m",
                                                               :additional_jboss_opts  => [ '-Djboss.proxyname=localhost','-Djboss.proxyport=8440'],
                                                               :additional_java_opts   => [ '-Xdebug',
                                                                                            '-Xrunjdwp:transport=dt_socket,address=8780,server=y,suspend=n' ],
