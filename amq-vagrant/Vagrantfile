@@ -1,0 +1,139 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  
+   config.vm.define :mc1 do |mc1_config|
+    mc1_config.vm.box = "centos64min"
+    mc1_config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos64min.box"
+    mc1_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+    
+    # FUSE MC HTTP
+    mc1_config.vm.forward_port 8181, 8181
+    # SSH
+    #mc1_config.vm.forward_port 22, 2224
+    
+    mc1_config.vm.network :hostonly, "192.168.1.5"
+    mc1_config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = "/Users/fish/tmp/chef/chef-repo-yu/cookbooks"
+    chef.roles_path = "/Users/fish/tmp/chef/chef-repo-yu/roles"
+    
+      chef.add_recipe "jdk"
+      chef.add_recipe "misc"
+      chef.add_recipe "karaf"
+      chef.add_recipe "fusemc"
+      
+      # You may also specify custom JSON attributes:
+      chef.json.merge!({
+                          :misc => {  :hostname => "mc1" },
+                          :jdk => {  
+                                      :tmpdir     => "/vagrant/src",
+                                      :jdk_url    => 'http://leleupi.its.yale.edu:8181/PKG/jdk1.6.0_33.tar.gz',
+                                      :jdk_file   => 'jdk1.6.0_33.tar.gz',
+                                      :java_home  => '/usr/local/jdk1.6.0_33'
+                                    },
+                          :fusemc => {  
+                                       :install => '/usr/local/jboss-fuse-6.0.0.redhat-024',
+                                       :file    => 'jboss-fuse-minimal-6.0.0.redhat-024.tar.gz',
+                                       :url     => 'http://leleupi.its.yale.edu:8181/PKG/jboss-fuse-minimal-6.0.0.redhat-024.tar.gz',
+                                       :tmpdir  => "/vagrant/src",
+                                       :user    => "vagrant",
+                                       :fabric  => {
+                                                      :local_resolver => 'manualip',
+                                                      :glabal_resolver => 'manualip',
+                                                      :manual_ip => '192.168.1.5'
+                                                    }
+                                     }
+                      })
+     end
+  end
+  
+  config.vm.define :mq1 do |mq1_config|
+    mq1_config.vm.box = "centos64min"
+    mq1_config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos64min.box"
+    mq1_config.vm.customize ["modifyvm", :id, "--memory", "512"]
+  
+    #mq1_config.vm.forward_port 8181, 8181
+    # SSH
+    #mq1_config.vm.forward_port 22, 2222
+  
+    mq1_config.vm.network :hostonly, "192.168.1.10"
+    mq1_config.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = "/Users/fish/tmp/chef/chef-repo-yu/cookbooks"
+      chef.roles_path = "/Users/fish/tmp/chef/chef-repo-yu/roles"
+    
+      # chef.add_role "esb-vagrant"
+      chef.add_recipe "misc::hosts"
+      chef.add_recipe "jdk"
+      chef.add_recipe "karaf"
+      chef.add_recipe "amq"
+      
+      
+      # You may also specify custom JSON attributes:
+      chef.json.merge!({
+                          :misc => {  :hostname => "mq1" },
+                          :jdk => {  
+                                      :tmpdir     => "/vagrant/src",
+                                      :jdk_url    => 'http://leleupi.its.yale.edu:8181/PKG/jdk1.6.0_33.tar.gz',
+                                      :jdk_file   => 'jdk1.6.0_33.tar.gz',
+                                      :java_home  => '/usr/local/jdk1.6.0_33'
+                                    },
+                          :amq => {  
+                                      :tmpdir   => "/vagrant/src",
+                                      :user     => "vagrant",
+                                      :url      => 'http://leleupi.its.yale.edu:8181/PKG/jboss-a-mq-6.0.0.redhat-024.tar.gz',
+                                      :fabric   => {
+                                                      :zookeeper_url => '192.168.1.5:2181',
+                                                      :local_resolver => 'manualip',
+                                                      :manualip => '192.168.1.10',
+                                                      :container_name => 'mq1'
+                                                    }
+                                    }   
+                      })
+     end
+  end
+  
+  config.vm.define :mq2 do |mq2_config|
+    mq2_config.vm.box = "centos64min"
+    mq2_config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos64min.box"
+    mq2_config.vm.customize ["modifyvm", :id, "--memory", "512"]
+    
+    #mq2_config.vm.forward_port 8181, 8181
+    # SSH
+    #mq2_config.vm.forward_port 22, 2223
+  
+    mq2_config.vm.network :hostonly, "192.168.1.11"
+    mq2_config.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path = "/Users/fish/tmp/chef/chef-repo-yu/cookbooks"
+      chef.roles_path = "/Users/fish/tmp/chef/chef-repo-yu/roles"
+  
+      # chef.add_role "esb-vagrant"
+      chef.add_recipe "misc::hosts"
+      chef.add_recipe "jdk"
+      chef.add_recipe "karaf"
+      chef.add_recipe "amq"
+      
+      # You may also specify custom JSON attributes:
+      chef.json.merge!({
+                          :misc => {  :hostname => "mq2" },
+                          :jdk => {  
+                                      :tmpdir     => "/vagrant/src",
+                                      :jdk_url    => 'http://leleupi.its.yale.edu:8181/PKG/jdk1.6.0_33.tar.gz',
+                                      :jdk_file   => 'jdk1.6.0_33.tar.gz',
+                                      :java_home  => '/usr/local/jdk1.6.0_33'
+                                    },
+                          :amq => {  
+                                      :tmpdir   => "/vagrant/src",
+                                      :user     => "vagrant",
+                                      :url      => 'http://leleupi.its.yale.edu:8181/PKG/jboss-a-mq-6.0.0.redhat-024.tar.gz',
+                                      :fabric   => {
+                                                      :zookeeper_url => '192.168.1.5:2181',
+                                                      :local_resolver => 'manualip',
+                                                      :manualip => '192.168.1.11',
+                                                      :container_name => 'mq2'
+                                                    }
+                                    }        
+                      })
+     end
+  end
+end
