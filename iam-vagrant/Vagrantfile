@@ -71,7 +71,7 @@ Vagrant::Config.run do |config|
                                   },
                         :iam => {   :tmpdir => "/vagrant/src",
                                     :radiantone => { 
-                                              :rpm_source => 'http://leleupi.its.yale.edu:8181/PKG/radiantone-vds-ics-6.0.2-1.x86_64.rpm',
+                                              :rpm_source => 'http://leleupi.its.yale.edu:8181/PKG/radiantone-6.1.0-0.x86_64.rpm',
                                               :user => "vagrant"
                                             } 
                                 },
