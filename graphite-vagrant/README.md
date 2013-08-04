@@ -16,3 +16,9 @@
 > `vagrant ssh`  
 > `sudo su -`  
 > `cd /opt/graphite/webapp/graphite/ && python ./manage.py syncdb`  
+
+- Make the storage dir writable (I'll do this in code eventually)
+> chown -Rh apache:apache /opt/graphite/storage/ 
+
+- Start carbon-cache
+> `/opt/graphite/bin/carbon-cache.py start`  
