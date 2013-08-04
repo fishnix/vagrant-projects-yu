@@ -6,8 +6,14 @@ Vagrant::Config.run do |config|
    config.vm.define :mc1 do |mc1_config|
     mc1_config.vm.box = "centos64min"
     mc1_config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos64min.box"
-    mc1_config.vm.customize ["modifyvm", :id, "--memory", "1024"]
-    
+    mc1_config.vm.provider :virtualbox do |vb|
+      # Don't boot with headless mode
+      vb.gui = false
+
+      # Use VBoxManage to customize the VM. For example to change memory:
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+        
     # FUSE MC HTTP
     mc1_config.vm.forward_port 8181, 8181
     # SSH
@@ -15,8 +21,8 @@ Vagrant::Config.run do |config|
     
     mc1_config.vm.network :hostonly, "192.168.1.5"
     mc1_config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = "/Users/fish/tmp/chef/chef-repo-yu/cookbooks"
-    chef.roles_path = "/Users/fish/tmp/chef/chef-repo-yu/roles"
+      chef.cookbooks_path = "../chef-repo-yu/cookbooks"
+      chef.roles_path = "../chef-repo-yu/roles"
     
       chef.add_recipe "jdk"
       chef.add_recipe "misc"
@@ -51,9 +57,16 @@ Vagrant::Config.run do |config|
   config.vm.define :mq1 do |mq1_config|
     mq1_config.vm.box = "centos64min"
     mq1_config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos64min.box"
-    mq1_config.vm.customize ["modifyvm", :id, "--memory", "512"]
-  
-    #mq1_config.vm.forward_port 8181, 8181
+    mq1_config.vm.provider :virtualbox do |vb|
+      # Don't boot with headless mode
+      vb.gui = false
+
+      # Use VBoxManage to customize the VM. For example to change memory:
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+      
+    mq1_config.vm.forward_port 8207, 8107
+    mq1_config.vm.forward_port 8281, 8181
     # SSH
     #mq1_config.vm.forward_port 22, 2222
   
@@ -96,9 +109,17 @@ Vagrant::Config.run do |config|
   config.vm.define :mq2 do |mq2_config|
     mq2_config.vm.box = "centos64min"
     mq2_config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos64min.box"
-    mq2_config.vm.customize ["modifyvm", :id, "--memory", "512"]
-    
-    #mq2_config.vm.forward_port 8181, 8181
+    mq1_config.vm.provider :virtualbox do |vb|
+      # Don't boot with headless mode
+      vb.gui = false
+
+      # Use VBoxManage to customize the VM. For example to change memory:
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+        
+    mq2_config.vm.forward_port 8307, 8107
+    mq2_config.vm.forward_port 8381, 8181
+
     # SSH
     #mq2_config.vm.forward_port 22, 2223
   
