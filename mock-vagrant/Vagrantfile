@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "centos64min"
+  config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/centos64min.box"
+  
+  config.vm.provider :virtualbox do |vb|
+    # Don't boot with headless mode
+    vb.gui = false
+  
+    # Use VBoxManage to customize the VM. For example to change memory:
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+  
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path   = "../chef-repo-yu/cookbooks"
+    chef.roles_path       = "../chef-repo-yu/roles"
+    chef.data_bags_path   = "../chef-repo-yu/data_bags"
+
+    chef.add_recipe "misc::hosts"
+    chef.add_recipe "yum"
+    chef.add_recipe "mock"
+    
+    # You may also specify custom JSON attributes:
+    chef.json.merge!({
+                        "misc"    => {  :hostname => "graphite" },
+                    })
+  end
+end
