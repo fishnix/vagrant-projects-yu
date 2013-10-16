@@ -2,3 +2,4 @@ chef-repo-yu
 .vagrant
 */OLD/*
 */src/*
+*/cfengine3/*

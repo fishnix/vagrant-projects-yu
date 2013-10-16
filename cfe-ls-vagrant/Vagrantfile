@@ -1,0 +1,80 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "rhel63min"
+  config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/rhel63min.box"
+
+  config.ssh.forward_agent = true
+
+  config.vm.provider :virtualbox do |vb|
+    # Don't boot with headless mode
+    vb.gui = false
+  
+    # Use VBoxManage to customize the VM. For example to change memory:
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+  
+  config.vm.define :es1 do |es1|
+    es1.vm.network :forwarded_port, guest: 9200, host: 9200
+    es1.vm.network :private_network, ip: "192.168.33.10"
+
+    es1.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path   = "../chef-repo-yu/cookbooks"
+      chef.roles_path       = "../chef-repo-yu/roles"
+      chef.data_bags_path   = "../chef-repo-yu/data_bags"
+
+      chef.add_recipe "misc::hosts"
+      chef.add_recipe "yum::satellite"
+      chef.add_recipe "cfengine::localclient"
+
+      chef.json.merge!({
+                          "misc"      => {  :hostname => "es1" },
+                          "cfengine"  => {  :policy_server   => 'vm-cfgprdapp-01.its.yale.edu',
+                                            :policy_server_ip  => '130.132.50.34',
+                                            :masterfiles => '/var/cfengine/masterfiles',
+                                            :inputs => '/var/cfengine/inputs',
+                                            :cfengine_package => "cfengine-community"
+                                          },
+                          "yum"       => { :satellite => { 
+                                              :certurl => "http://vm-satprdapp-01.its.yale.edu/pub/RHN-ORG-TRUSTED-SSL-CERT"
+                                            }
+                                          }
+                      })
+     end
+   end     
+
+   config.vm.define :mt1 do |mt1|
+     mt1.vm.network :forwarded_port, guest: 6379, host: 6379
+     mt1.vm.network :private_network, ip: "192.168.33.11"
+
+     mt1.vm.provision :chef_solo do |chef|
+       chef.cookbooks_path   = "../chef-repo-yu/cookbooks"
+       chef.roles_path       = "../chef-repo-yu/roles"
+       chef.data_bags_path   = "../chef-repo-yu/data_bags"
+
+       chef.add_recipe "misc::hosts"
+       chef.add_recipe "yum::satellite"
+       chef.add_recipe "cfengine::localclient"
+
+       chef.json.merge!({
+                           "misc"      => {  :hostname => "mt1" },
+                           "cfengine"  => {  :policy_server   => 'vm-cfgprdapp-01.its.yale.edu',
+                                             :policy_server_ip  => '130.132.50.34',
+                                             :masterfiles => '/var/cfengine/masterfiles',
+                                             :inputs => '/var/cfengine/inputs',
+                                             :cfengine_package => "cfengine-community"
+                                           },
+                           "yum"       => { :satellite => { 
+                                               :certurl => "http://vm-satprdapp-01.its.yale.edu/pub/RHN-ORG-TRUSTED-SSL-CERT"
+                                             }
+                                           }
+                       })
+      end
+    end
+
+    config.vm.synced_folder "cfengine3/","/var/cfengine/masterfiles/"
+end
