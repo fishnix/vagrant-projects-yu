@@ -1,0 +1,48 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "rhel63min"
+  config.vm.box_url = "http://leleupi.its.yale.edu:8181/PKG/rhel63min.box"
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  config.vm.provider :virtualbox do |vb|
+    # Don't boot with headless mode
+    # vb.gui = true
+    # Use VBoxManage to customize the VM. For example to change memory:
+    vb.customize ["modifyvm", :id, "--memory", "768"]
+  end
+  
+  config.vm.define :server1 do |s1|
+    # Create a forwarded port mapping which allows access to a specific port
+    # within the machine from a port on the host machine. 
+    s1.vm.network :forwarded_port, guest: 8080, host: 8080
+    s1.vm.network :forwarded_port, guest: 9990, host: 9990
+    s1.vm.network :forwarded_port, guest: 9999, host: 9999
+    s1.vm.network :private_network, ip: "192.168.33.10"
+
+    s1.vm.provision :chef_solo do |chef|
+      chef.cookbooks_path   = "../chef-repo-yu/cookbooks"
+      chef.roles_path       = "../chef-repo-yu/roles"
+      chef.data_bags_path   = "../chef-repo-yu/data_bags"
+
+      chef.add_recipe "recipe[misc::hosts]"
+      chef.add_recipe "recipe[yum::satellite]"
+      chef.add_recipe "recipe[jboss-eap6::default]"
+      # chef.add_role "web"
+  
+      # You may also specify custom JSON attributes:
+      chef.json = { :misc => {  :hostname => "server1" } }
+    end
+  end
+  
+end
