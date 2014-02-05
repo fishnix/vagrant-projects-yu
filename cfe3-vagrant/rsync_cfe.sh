@@ -5,4 +5,4 @@
 
 SOURCE='/Volumes/cfengine3/'
 
-rsync --delete -av --exclude='*promises.cf*' --exclude='*group.cf*' --exclude='.Trashes' ${SOURCE}  cfengine3/
+rsync --delete -av --exclude='*promises.cf*' --exclude='*group.cf*' --exclude='.fseventsd' --exclude='.Trashes' ${SOURCE}  cfengine3/
