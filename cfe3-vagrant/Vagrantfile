@@ -15,8 +15,10 @@ Vagrant::Config.run do |config|
 
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
-  config.vm.forward_port 22, 2222
-  config.vm.forward_port 8080, 8080
+  #config.vm.forward_port 22, 2222
+  config.vm.forward_port 8081, 8081
+  config.vm.forward_port 8181, 8181
+  config.vm.forward_port 8101, 8101
   
   # Enable provisioning with chef solo, specifying a cookbooks path (relative
   # to this Vagrantfile), and adding some recipes and/or roles.
@@ -37,9 +39,10 @@ Vagrant::Config.run do |config|
                                         :inputs => '/var/cfengine/inputs',
                                         :cfengine_package => "cfengine-community"
                                       },
-                        :yum => { :satellite => { 
-                                      :certurl => "http://vm-satprdapp-01.its.yale.edu/pub/RHN-ORG-TRUSTED-SSL-CERT"
-                                    }
+                        :yum => {     :satellite => { 
+                                        :certurl => "http://vm-satprdapp-01.its.yale.edu/pub/RHN-ORG-TRUSTED-SSL-CERT"
+                                      },
+                                      :gpgcheck => "0"
                                 }
                     })
    end
